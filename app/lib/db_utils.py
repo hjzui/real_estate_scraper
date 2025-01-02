@@ -15,14 +15,36 @@ def save_data_to_db(data):
     cursor = conn.cursor()
 
     for entry in data:
+        # Check for existing entry based on title, PLZ, and link
         cursor.execute("""
-            INSERT INTO listings_apartments (title, link, price, plz, living_space_qm, land_area_qm, count_rooms, year_construction, type) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-        """, (
-            entry['title'], entry['link'], entry['price'], entry['plz'], 
-            entry['living_space_qm'], entry['land_area_qm'], entry['count_rooms'], 
-            entry['year_construction'], entry['type']
-        ))
+            SELECT price FROM listings_apartments WHERE title = %s AND plz = %s AND link = %s
+        """, (entry['title'], entry['plz'], entry['link']))
+        
+        existing_record = cursor.fetchone()
+        
+        if existing_record:
+            existing_price = existing_record[0]
+            if existing_price != entry['price']:
+                cursor.execute("""
+                    UPDATE listings_apartments
+                    SET price = %s, living_space_qm = %s, land_area_qm = %s, count_rooms = %s, year_construction = %s, type = %s
+                    WHERE title = %s AND plz = %s AND link = %s
+                """, (
+                    entry['price'], entry['living_space_qm'], entry['land_area_qm'],
+                    entry['count_rooms'], entry['year_construction'], entry['type'],
+                    entry['title'], entry['plz'], entry['link']
+                ))
+                print(f"Updated entry: {entry['title']} - New price: {entry['price']}")
+        else:
+            cursor.execute("""
+                INSERT INTO listings_apartments (title, link, price, plz, living_space_qm, land_area_qm, count_rooms, year_construction, type)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (
+                entry['title'], entry['link'], entry['price'], entry['plz'], 
+                entry['living_space_qm'], entry['land_area_qm'], entry['count_rooms'], 
+                entry['year_construction'], entry['type']
+            ))
+            print(f"Added new entry: {entry['title']}")
 
     conn.commit()
     cursor.close()

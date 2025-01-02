@@ -108,5 +108,3 @@ def extract_data_from_page(url, max_entries=None):
             print("Skipping listing due to missing critical data")
 
     return data
-        
-    
