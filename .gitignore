@@ -1,0 +1,57 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C Extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Unit test / coverage reports
+*.cover
+.coverage
+*.py,cover
+.hypothesis/
+.tox/
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+
+# Virtualenv
+*.env
+*.venv
+*venv*/
+
+# Pyenv
+.python-version
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# MySQL Workbench
+*.mwb
+
+# macOS
+.DS_Store
+
+# Docker
+*.tar
+*.whl
+
+# Other
+*~

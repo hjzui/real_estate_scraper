@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    volumes:
+      - .:/app
+    environment:
+      - PGHOST=192.168.2.146
+      - PGDATABASE=real_estate
+      - PGUSER=postgres
+      - PGPASSWORD=xx
+      - PGPORT=5432
+    depends_on:
+      - db
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: real_estate
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: xx
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
