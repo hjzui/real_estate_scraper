@@ -16,10 +16,14 @@ def save_data_to_db(data):
 
     for entry in data:
         cursor.execute("""
-            INSERT INTO listings_apartments (title, link, price, plz, living_space_qm, land_area_qm, count_rooms, year_construction) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-        """, (entry['title'], entry['link'], entry['price'], entry['plz'], entry['living_space_qm'], entry['land_area_qm'], entry['count_rooms'], entry['year_construction']))
-    
+            INSERT INTO listings_apartments (title, link, price, plz, living_space_qm, land_area_qm, count_rooms, year_construction, type) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """, (
+            entry['title'], entry['link'], entry['price'], entry['plz'], 
+            entry['living_space_qm'], entry['land_area_qm'], entry['count_rooms'], 
+            entry['year_construction'], entry['type']
+        ))
+
     conn.commit()
     cursor.close()
     conn.close()
