@@ -1,29 +1,17 @@
 version: '3.8'
 
 services:
-  app:
+  scraper:
     build: .
-    volumes:
-      - .:/app
+    container_name: real_estate_scraper
     environment:
-      - PGHOST=192.168.2.146
-      - PGDATABASE=real_estate
-      - PGUSER=postgres
-      - PGPASSWORD=xx
-      - PGPORT=5432
-    depends_on:
-      - db
+      - PYTHONUNBUFFERED=1  # Helpful for real-time logging
+    restart: unless-stopped
+    networks:
+      - my_network
+    # Simple loop structure as a basic scheduler to run daily
+    entrypoint: ["sh", "-c", "while true; do python app/main.py; sleep 86400; done"]
 
-  db:
-    image: postgres
-    environment:
-      POSTGRES_DB: real_estate
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: xx
-    ports:
-      - "5432:5432"
-    volumes:
-      - db_data:/var/lib/postgresql/data
-
-volumes:
-  db_data:
+networks:
+  my_network:
+    driver: bridge
